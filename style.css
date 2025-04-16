@@ -1,11 +1,31 @@
 /* Grundläggande stil */
-body {
+* {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  background-color: #111;
-  color: #fff;
-  font-family: Arial, sans-serif;
-  overflow: hidden; /* Förhindrar att sidan scrollar */
+}
+
+body {
+  background: #111;
+  color: #f0f0f0;
+  font-family: 'Press Start 2P', cursive;
+  overflow: hidden;
+}
+
+/* Stjärnig bakgrund */
+#stars {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(#fff 1px, transparent 1px);
+  background-size: 20px 20px;
+  animation: moveStars 20s linear infinite;
+  z-index: -1;
+}
+
+@keyframes moveStars {
+  from { background-position: 0 0; }
+  to { background-position: 1000px 1000px; }
 }
 
 /* Menystil */
@@ -15,46 +35,39 @@ body {
   align-items: center;
   justify-content: center;
   height: 100vh;
+  text-align: center;
 }
 
 .game-title {
-  font-size: 3rem;
-  margin-bottom: 30px;
-  text-transform: uppercase;
-  animation: neonGlow 1.5s infinite alternate;
-}
-
-@keyframes neonGlow {
-  from {
-    text-shadow: 0 0 5px #fff, 0 0 10px #ff0;
-  }
-  to {
-    text-shadow: 0 0 20px #ff0, 0 0 30px #ff0;
-  }
+  font-size: 2em;
+  margin-bottom: 20px;
+  color: #e91e63;
+  text-shadow: 0px 0px 10px #e91e63;
 }
 
 .menu-options {
   list-style: none;
   padding: 0;
-  margin: 0;
 }
 
 .menu-item {
-  font-size: 1.8rem;
-  margin: 10px 0;
+  font-size: 1em;
   padding: 10px 20px;
+  margin: 8px 0;
   cursor: pointer;
   border: 2px solid transparent;
-  transition: border 0.3s, transform 0.3s;
-}
-
-.menu-item.selected {
-  border: 2px solid #ff7300;
-  transform: scale(1.1);
+  border-radius: 5px;
+  transition: all 0.3s ease;
 }
 
 .menu-item:hover {
-  border: 2px solid #ff7300;
+  background: rgba(233, 30, 99, 0.1);
+}
+
+.menu-item.selected {
+  border: 2px solid #e91e63;
+  background: rgba(233, 30, 99, 0.2);
+  transform: scale(1.05);
 }
 
 /* Spelcontainer */
@@ -67,14 +80,28 @@ body {
 }
 
 canvas {
-  background-color: #000;
+  background: #000;
   border: 3px solid #fff;
-  box-shadow: 0 0 15px lime;
+  box-shadow: 0 0 20px #fff;
+  margin-bottom: 20px;
 }
 
 /* HUD */
-#hud {
-  margin-top: 10px;
+.hud {
+  font-size: 1em;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.achievement {
+  color: #ff0;
+  text-shadow: 0 0 10px #ff0;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
 }
 
 /* Settings och Scoreboard */
@@ -87,23 +114,25 @@ canvas {
   height: 100vh;
 }
 
-/* Power-up indikator */
-.powerup-indicator {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  background: rgba(0, 0, 255, 0.8);
-  padding: 8px 16px;
-  border-radius: 5px;
-  font-size: 1rem;
-  color: #fff;
-  display: none;
-}
-
 /* Responsiv design */
 @media (max-width: 600px) {
   canvas {
     width: 90vw;
     height: 90vw;
   }
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 1em;
+  color: #fff;
+  background: #e91e63;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+button:hover {
+  background: #c2185b;
 }
