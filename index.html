@@ -1,13 +1,15 @@
+index.html
+
 <!DOCTYPE html>
 <html lang="sv">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Snake Extreme 5.0</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <!-- Huvudmeny med klassisk navigering -->
+  <!-- Huvudmeny -->
   <div id="menu" class="menu">
     <h1 class="game-title">Snake Extreme 5.0</h1>
     <ul class="menu-options">
@@ -19,23 +21,29 @@
   </div>
 
   <!-- Spelcontainer -->
-  <div id="game-container" class="game-container" style="display: none;">
+  <div id="game-container" class="game-container" style="display:none;">
     <canvas id="gameCanvas" width="600" height="600"></canvas>
     <div id="hud" class="hud">
       <p id="scoreDisplay">Score: 0</p>
     </div>
-    <button id="backButton" onclick="returnToMenu()">Back to Menu</button>
+    <!-- Game Over-overlay -->
+    <div id="gameOverScreen" class="overlay" style="display:none;">
+      <h2>Game Over</h2>
+      <p id="finalScore"></p>
+      <button onclick="restartGame()">Restart</button>
+    </div>
+    <button id="backButton" class="back-button" onclick="returnToMenu()">Back to Menu</button>
   </div>
 
   <!-- Settings-sida -->
-  <div id="settings-container" class="settings-container" style="display: none;">
+  <div id="settings-container" class="settings-container" style="display:none;">
     <h2>Settings</h2>
-    <p>No settings available in this version.</p>
+    <p>(Inga inställningar ännu...)</p>
     <button onclick="returnToMenu()">Back</button>
   </div>
 
   <!-- Scoreboard-sida -->
-  <div id="scoreboard-container" class="scoreboard-container" style="display: none;">
+  <div id="scoreboard-container" class="scoreboard-container" style="display:none;">
     <h2>Score Board</h2>
     <ul id="scoreList"></ul>
     <button onclick="returnToMenu()">Back</button>
