@@ -1,19 +1,15 @@
 <!DOCTYPE html>
 <html lang="sv">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Snake Extreme 6.0</title>
-  <link rel="stylesheet" href="styles.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Snake Extreme 5.0</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <!-- Stjärnig bakgrund -->
-  <div id="stars"></div>
-
-  <!-- Huvudmeny -->
+  <!-- Huvudmeny med klassisk navigering -->
   <div id="menu" class="menu">
-    <h1 class="game-title">Snake Extreme 6.0</h1>
+    <h1 class="game-title">Snake Extreme 5.0</h1>
     <ul class="menu-options">
       <li class="menu-item selected" data-action="start">Start Game</li>
       <li class="menu-item" data-action="settings">Settings</li>
@@ -27,7 +23,6 @@
     <canvas id="gameCanvas" width="600" height="600"></canvas>
     <div id="hud" class="hud">
       <p id="scoreDisplay">Score: 0</p>
-      <p id="achievement" class="achievement"></p>
     </div>
     <button id="backButton" onclick="returnToMenu()">Back to Menu</button>
   </div>
@@ -51,8 +46,6 @@
   <audio id="bonusSound" src="sounds/bonus.mp3"></audio>
   <audio id="powerupSound" src="sounds/powerup.mp3"></audio>
   <audio id="speedBoostSound" src="sounds/speedBoostSound.mp3"></audio>
-  <audio id="slowdownSound" src="sounds/slowdown.mp3"></audio>
-  <audio id="poisonSound" src="sounds/poison.mp3"></audio>
   <audio id="gameOverSound" src="sounds/gameover.mp3"></audio>
   <audio id="backgroundMusic" src="sounds/background.mp3" loop></audio>
   <audio id="menuNavigateSound" src="sounds/menuNavigate.mp3"></audio>
