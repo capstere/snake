@@ -1,18 +1,22 @@
 "use strict";
 
-// Hämta HTML-element
+/* ---------------------------
+   Elementreferenser
+---------------------------- */
 const menu = document.getElementById("menu");
 const menuItems = document.querySelectorAll(".menu-item");
 const gameContainer = document.getElementById("game-container");
 const settingsContainer = document.getElementById("settings-container");
 const scoreboardContainer = document.getElementById("scoreboard-container");
 const scoreList = document.getElementById("scoreList");
+const gameOverScreen = document.getElementById("gameOverScreen");
+const finalScore = document.getElementById("finalScore");
 
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 const scoreDisplay = document.getElementById("scoreDisplay");
 
-// Ljud-element
+/* Ljud */
 const eatSound = document.getElementById("eatSound");
 const bonusSound = document.getElementById("bonusSound");
 const powerupSound = document.getElementById("powerupSound");
@@ -21,10 +25,12 @@ const gameOverSound = document.getElementById("gameOverSound");
 const backgroundMusic = document.getElementById("backgroundMusic");
 const menuNavigateSound = document.getElementById("menuNavigateSound");
 
-// Menynavigering
+/* ---------------------------
+   Menynavigering
+---------------------------- */
 let selectedMenuIndex = 0;
-
 document.addEventListener("keydown", (event) => {
+  // Hantera meny-navigering om menyn visas
   if (menu.style.display !== "none") {
     if (event.key === "ArrowUp") {
       event.preventDefault();
@@ -48,7 +54,7 @@ function changeMenuSelection(change) {
 
 function selectMenuOption() {
   const action = menuItems[selectedMenuIndex].getAttribute("data-action");
-  switch(action) {
+  switch (action) {
     case "start":
       startGame();
       break;
@@ -71,17 +77,21 @@ function playMenuNavigateSound() {
   }
 }
 
-// Spelvariabler
+/* ---------------------------
+   Spelvariabler
+---------------------------- */
 let snake = [];
 let food = { x: 15, y: 15, type: "normal" };
 let dx = 1, dy = 0;
 let score = 0;
 let gameOver = false;
 let gameInterval = null;
-const normalInterval = 100;  // ms
+const normalInterval = 100; // i millisekunder
 let invincible = false;
 
-// Starta spelet
+/* ---------------------------
+   Spelfunktioner
+---------------------------- */
 function startGame() {
   menu.style.display = "none";
   settingsContainer.style.display = "none";
@@ -92,7 +102,6 @@ function startGame() {
   gameInterval = setInterval(gameLoop, normalInterval);
 }
 
-// Återställ spelets variabler
 function resetGame() {
   gameOver = false;
   snake = [{ x: 10, y: 10 }];
@@ -101,9 +110,9 @@ function resetGame() {
   invincible = false;
   placeFood();
   scoreDisplay.innerText = "Score: 0";
+  if (gameOverScreen) gameOverScreen.style.display = "none";
 }
 
-// Spelloopen
 function gameLoop() {
   if (gameOver) return;
   moveSnake();
@@ -111,15 +120,15 @@ function gameLoop() {
   scoreDisplay.innerText = "Score: " + score;
 }
 
-// Flytta ormen
 function moveSnake() {
   const head = { x: snake[0].x + dx, y: snake[0].y + dy };
 
-  // Väggkollision
+  // Kolla väggkollision
   if (head.x < 0 || head.x >= 30 || head.y < 0 || head.y >= 30) {
     return endGame();
   }
-  // Självkollision (om ej osårbar)
+
+  // Kolla självkollision (om ej invincible)
   for (let i = 1; i < snake.length; i++) {
     if (head.x === snake[i].x && head.y === snake[i].y && !invincible) {
       return endGame();
@@ -146,15 +155,14 @@ function moveSnake() {
   snake.unshift(head);
 }
 
-// Rita spelet
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+  // Rita ormen
   ctx.fillStyle = "lime";
   snake.forEach(segment => {
     ctx.fillRect(segment.x * 20, segment.y * 20, 18, 18);
   });
-  
-  // Rita maten med färg beroende på typ
+  // Rita maten (färg beroende på typ)
   if (food.type === "normal") {
     ctx.fillStyle = "red";
   } else if (food.type === "bonus") {
@@ -165,7 +173,6 @@ function draw() {
   ctx.fillRect(food.x * 20, food.y * 20, 18, 18);
 }
 
-// Lyssna på tangenttryckningar för ormrörelser
 document.addEventListener("keydown", (event) => {
   if (gameContainer.style.display !== "none") {
     switch (event.key) {
@@ -185,29 +192,25 @@ document.addEventListener("keydown", (event) => {
   }
 });
 
-// Avsluta spelet
 function endGame() {
   gameOver = true;
   clearInterval(gameInterval);
   backgroundMusic.pause();
   playSound("gameOverSound");
-  setTimeout(() => {
-    let name = prompt("Game Over! Your score: " + score + "\nEnter your name:");
-    if (name) {
-      saveScore(name, score);
-    }
-    returnToMenu();
-  }, 500);
+  // Visa en Game Over-overlay
+  if (gameOverScreen) {
+    finalScore.innerText = "Score: " + score;
+    gameOverScreen.style.display = "flex";
+  }
 }
 
-// Placera maten slumpmässigt med slumpmässig typ
 function placeFood() {
   let rand = Math.random();
   let type = "normal";
   if (rand < 0.1) {
-    type = "bonus";       // 10% chans
+    type = "bonus";       // 10% chans för bonus
   } else if (rand < 0.15) {
-    type = "powerup";     // 5% chans
+    type = "powerup";     // 5% chans för powerup
   }
   food = {
     x: Math.floor(Math.random() * 30),
@@ -216,7 +219,7 @@ function placeFood() {
   };
 }
 
-// Temporär snabbare spelhastighet
+// Temporär snabbare hastighet
 function triggerSpeedBoost() {
   playSound("speedBoostSound");
   clearInterval(gameInterval);
@@ -235,16 +238,16 @@ function activateInvincibility() {
   }, 5000);
 }
 
-// Spara highscore lokalt via localStorage
+// Spara score i localStorage (enkel highscore)
 function saveScore(name, score) {
   let scores = JSON.parse(localStorage.getItem("snakeScores")) || [];
-  scores.push({ name: name, score: score });
+  scores.push({ name, score });
   scores.sort((a, b) => b.score - a.score);
   scores = scores.slice(0, 10);
   localStorage.setItem("snakeScores", JSON.stringify(scores));
 }
 
-// Visa scoreboard
+// Visa Scoreboard
 function showScoreboard() {
   let scores = JSON.parse(localStorage.getItem("snakeScores")) || [];
   updateScoreList(scores);
@@ -258,7 +261,7 @@ function updateScoreList(scores) {
   scoreList.innerHTML = scores.map(s => `<li>${s.name}: ${s.score}</li>`).join("");
 }
 
-// Visa settings (placeholder)
+// Visa Settings (placeholder)
 function showSettings() {
   menu.style.display = "none";
   gameContainer.style.display = "none";
@@ -266,7 +269,7 @@ function showSettings() {
   settingsContainer.style.display = "flex";
 }
 
-// Gå tillbaka till menyn
+// Återgå till menyn
 function returnToMenu() {
   clearInterval(gameInterval);
   gameContainer.style.display = "none";
@@ -276,11 +279,13 @@ function returnToMenu() {
   backgroundMusic.pause();
 }
 
-function exitGame() {
-  location.reload();
+// Starta om spelet från Game Over-skärmen
+function restartGame() {
+  gameOverScreen.style.display = "none";
+  startGame();
 }
 
-// Spela upp ett ljud
+// Enkel ljudspelare
 function playSound(id) {
   const sound = document.getElementById(id);
   if (sound) {
