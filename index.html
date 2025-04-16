@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Snake Extreme 5.0 - Multiplayer</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Huvudmeny med klassisk navigering -->
+  <div id="menu" class="menu">
+    <h1 class="game-title">Snake Extreme 5.0</h1>
+    <ul class="menu-options">
+      <li class="menu-item selected" data-action="start">Start Game</li>
+      <li class="menu-item" data-action="settings">Settings</li>
+      <li class="menu-item" data-action="scoreboard">Score Board</li>
+      <li class="menu-item" data-action="exit">Exit</li>
+    </ul>
+  </div>
+
+  <!-- Spelcontainer -->
+  <div id="game-container" class="game-container" style="display: none;">
+    <canvas id="gameCanvas" width="600" height="600"></canvas>
+    <div id="hud">
+      <p id="scoreDisplay">Score: 0</p>
+      <p id="playerCount">Players Online: 0</p>
+    </div>
+    <div id="powerupIndicator" class="powerup-indicator"></div>
+    <button id="backToMenuButton" onclick="returnToMenu()">Back to Menu</button>
+  </div>
+
+  <!-- Settings-sida -->
+  <div id="settings-container" class="settings-container" style="display: none;">
+    <h2>Settings</h2>
+    <!-- Lägg in inställningar här -->
+    <button onclick="backToMenu()">Back</button>
+  </div>
+
+  <!-- Scoreboard-sida -->
+  <div id="scoreboard-container" class="scoreboard-container" style="display: none;">
+    <h2>Score Board</h2>
+    <ul id="scoreList"></ul>
+    <button onclick="backToMenu()">Back</button>
+  </div>
+
+  <!-- Ljudfiler -->
+  <audio id="eatSound" src="sounds/eat.mp3"></audio>
+  <audio id="powerupSound" src="sounds/powerup.mp3"></audio>
+  <audio id="gameOverSound" src="sounds/gameover.mp3"></audio>
+  <audio id="backgroundMusic" src="sounds/background.mp3" loop></audio>
+  <audio id="bonusSound" src="sounds/bonus.mp3"></audio>
+  <audio id="speedBoostSound" src="sounds/speedboost.mp3"></audio>
+  <audio id="menuNavigateSound" src="sounds/menuNavigate.mp3"></audio>
+
+  <!-- Socket.IO (om du kör backend separat) och JavaScript -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
